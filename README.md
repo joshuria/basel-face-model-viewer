@@ -6,6 +6,9 @@
  
  For further information about the model and the surrounding theory and software please visit [http://gravis.dmi.unibas.ch/PMM](http://gravis.dmi.unibas.ch/PMM)
 
+This repository migrates sbt building system to maven and support output images and meshes by given
+configuration file.
+
 ## Requirements
 - installed [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (Version 8.0 or higher recommended)
 - installed [sbt](http://www.scala-sbt.org/release/tutorial/Setup.html) (only for compiling from sources)
