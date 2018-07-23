@@ -1,6 +1,10 @@
 {
     "seed": 3,
     "modelPath": "B:/Download/model2017-1_face12_nomouth.h5",
+    "csvOutputPath": "./statistics.csv",
+    "meshOutputRootPath": "./output",
+    "closeAfterDone": false,
+    "saveImage": true,
     "width": 512,
     "height": 512,
     "updateImage": true,

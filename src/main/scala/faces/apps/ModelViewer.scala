@@ -51,6 +51,14 @@ object ModelViewer extends App {
     println("Fail to load config file: " + DefaultConfigPath)
     None
 
+  //! Detect if mesh output root folder need to create
+  try { new File(cfg.getMeshOutputRootPath).mkdirs() }
+  catch {
+    case e: IOException =>
+      println("Fail to create folder " + cfg.getMeshOutputRootPath)
+      System.exit(-1)
+  }
+
   val modelFile: Option[File] = getModelFile(args)
   modelFile.map(SimpleModelViewer(_, cfg))
 
@@ -570,6 +578,16 @@ case class SimpleModelViewer(
   })
 
 
+  //! Prepare statistics CSV
+  var csv = new CSVWriter()
+  //! Write CSV header
+  private val header = csv.newRow(colorRank + shapeRank + expRank)
+  var rnk = 0
+  for (rnk <- 0 until colorRank)  header.add("c" + rnk)
+  for (rnk <- 0 until shapeRank)  header.add("s" + rnk)
+  for (rnk <- 0 until expRank)    header.add("e" + rnk)
+  header.build()
+
   //! Run automation task defined in our config file
   private final val maxColorDim = math.min(colorRank, cfg.getColorMaxDimension)
   private final val maxShapeDim = math.min(shapeRank, cfg.getShapeMaxDimension)
@@ -680,10 +698,29 @@ case class SimpleModelViewer(
         //! Update image
         if (cfg.needUpdateImage())  updateImage()
         //! Write statistics csv
-        ;
-        //! Write to file
-        ;
+        val row = csv.newRow(colorRank + shapeRank + expRank)
+        for (rnk <- 0 until colorRank)  row.add(init.momo.color(rnk))
+        for (rnk <- 0 until shapeRank)  row.add(init.momo.shape(rnk))
+        for (rnk <- 0 until expRank)    row.add(init.momo.expression(rnk))
+        row.build()
+        //! Write mesh to file
+        val rootPath = cfg.getMeshOutputRootPath
+        val plyPath = s"$rootPath/$color-$shape-$express.ply"
+        val VCM3D = if (model.hasExpressions && !showExpressionModel) model.neutralModel.instance(init.momo.coefficients)
+          else model.instance(init.momo.coefficients)
+        MeshIO.write(VCM3D, new File(plyPath))
+
+        //! Write image to file
+        if (cfg.isSaveImage) {
+          val imgPath = s"$rootPath/$color-$shape-$express.png"
+          val img = renderer.renderImage(init)
+          PixelImageIO.write(img, new File(imgPath))
+        }
       }
     }
   }
+  csv.save(cfg.getCSVOutputPath)
+
+  println("Done")
+  if (cfg.closeAfterDone)   System.exit(0)
 }

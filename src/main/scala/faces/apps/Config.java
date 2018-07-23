@@ -17,7 +17,11 @@ import java.nio.file.Paths;
     private final int _seed;
     private final int _width, _height;
     private final String _modelPath;
+    private final String _csvOutputPath;
+    private final String _meshOutputRootPath;
     private final boolean _updateImage;
+    private final boolean _closeAfterDone;
+    private final boolean _saveImage;
 
     private final boolean _fixColor;
     private final boolean _fixShape;
@@ -43,8 +47,17 @@ import java.nio.file.Paths;
     public int getHeight() { return _height; }
     /**Shape model (*.h5) model's path.*/
     public String getModelPath() { return _modelPath; }
+    /**Statistics CSV file output path.*/
+    public String getCSVOutputPath() { return _csvOutputPath; }
+    /**Root folder path of for storing output mesh files.*/
+    public String getMeshOutputRootPath() { return _meshOutputRootPath; }
     /**Update image after adjust parameters or not.*/
     public boolean needUpdateImage() { return _updateImage; }
+    /**Is close app after all output done.*/
+    public boolean closeAfterDone() { return _closeAfterDone; }
+    /**Also save image related to enumerated parameters or not.
+     @implSpec the images will be saved to {@link #getMeshOutputRootPath()}.*/
+    public boolean isSaveImage() { return _saveImage; }
     /**Is face color (texture) fixed.*/
     public boolean isFixColor() { return _fixColor; }
     /**Is face shape (vertex position) fixed.*/
@@ -89,7 +102,11 @@ import java.nio.file.Paths;
         @JsonProperty("seed") int seed,
         @JsonProperty("width") int width, @JsonProperty("height") int height,
         @JsonProperty("modelPath") String modelPath,
+        @JsonProperty("csvOutputPath") String csvOutputPath,
+        @JsonProperty("meshOutputRootPath") String meshOutputRootPath,
         @JsonProperty("updateImage") boolean updateImage,
+        @JsonProperty("closeAfterDone") boolean closeAfterDone,
+        @JsonProperty("saveImage") boolean saveImage,
         @JsonProperty("colorFix") boolean colorFix,
         @JsonProperty("colorRandomCount") int colorRandomCount,
         @JsonProperty("colorMaxDimension") int colorMaxDimension,
@@ -107,7 +124,11 @@ import java.nio.file.Paths;
         _width = width > 0 ? width : DefaultWidth;
         _height = height > 0 ? height : DefaultHeight;
         _modelPath = modelPath;
+        _csvOutputPath = csvOutputPath;
+        _meshOutputRootPath = meshOutputRootPath.trim().isEmpty() ? "./" : meshOutputRootPath.trim();
         _updateImage = updateImage;
+        _closeAfterDone = closeAfterDone;
+        _saveImage = saveImage;
         _fixColor = colorFix;   _fixShape = shapeFix;   _fixExpression = expressionFix;
         if (colorFix) {
             _colorRandomCount = 0;
