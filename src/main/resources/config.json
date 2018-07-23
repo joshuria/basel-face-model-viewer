@@ -1,13 +1,13 @@
 {
     "seed": 3,
-    "modelPath": "./model.h5",
-    "width": 128,
-    "height": 128,
+    "modelPath": "B:/Download/model2017-1_face12_nomouth.h5",
+    "width": 512,
+    "height": 512,
 
-    "colorFix": true,
+    "colorFix": false,
     "colorRandomCount": 0,
-    "colorMaxDimension": 0,
-    "colorSamplePerDimension": 0,
+    "colorMaxDimension": 3,
+    "colorSamplePerDimension": 2,
 
     "shapeFix": true,
     "shapeRandomCount": 0,

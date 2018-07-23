@@ -569,4 +569,121 @@ case class SimpleModelViewer(
     override def mouseDragged(e: MouseEvent): Unit = {}
   })
 
+
+  //! Run automation task defined in our config file
+  private final val maxColorDim = math.min(colorRank, cfg.getColorMaxDimension)
+  private final val maxShapeDim = math.min(shapeRank, cfg.getShapeMaxDimension)
+  private final val maxExpressionDim = math.min(expRank, cfg.getExpressionMaxDimension)
+  private final val colorSamples: Int = if (cfg.isFixColor) 1 else
+    if (cfg.getColorRandomCount > 0) cfg.getColorRandomCount else maxColorDim * cfg.getColorSamplePerDimension
+  private final val shapeSamples: Int = if (cfg.isFixShape) 1 else
+    if (cfg.getShapeRandomCount > 0) cfg.getShapeRandomCount else maxShapeDim * cfg.getShapeSamplePerDimension
+  private final val expSamples: Int = if (cfg.isFixExpression) 1 else
+    if (cfg.getExpressionMaxDimension > 0) cfg.getExpressionMaxDimension else maxExpressionDim * cfg.getExpressionSamplePerDimension
+
+  import scala.collection.JavaConverters._
+  import scala.collection.mutable.ListBuffer
+
+  private final var colorSampleList = Sampler.sampleByCount(cfg.getColorSamplePerDimension).asScala
+  private final var shapeSampleList = Sampler.sampleByCount(cfg.getShapeSamplePerDimension).asScala
+  private final var expSampleList = Sampler.sampleByCount(cfg.getExpressionSamplePerDimension).asScala
+
+  private var colorSampleIndex = ListBuffer.fill[Int](maxColorDim)(0)
+  private var shapeSampleIndex = ListBuffer.fill[Int](maxShapeDim)(0)
+  private var expSampleIndex = ListBuffer.fill[Int](maxExpressionDim)(0)
+
+  var color = 0
+  var shape = 0
+  var express = 0
+  for (color <- 0 until colorSamples) {
+    if (!cfg.isFixColor) {
+      //! Do random
+      if (cfg.getColorRandomCount > 0)  randomColor()
+      //! Do sampling
+      else {
+        //! Update value
+        init = init.copy(momo = init.momo.copy(color = {
+          val current = init.momo.color
+          current.zipWithIndex.map {
+            case (k, v) =>
+              if (v < colorSampleIndex.size)
+                colorSampleList(colorSampleIndex(v)).asInstanceOf[Double] * maximalSigma
+              else
+                k
+          }
+        }))
+        //! Increase index
+        var i = 0
+        var carry = 0
+        colorSampleIndex(maxColorDim - 1) = colorSampleIndex(maxColorDim - 1) + 1
+        for (i <- maxColorDim - 1 to 0 by -1) {
+          val v = colorSampleIndex(i) + carry
+          carry = v / cfg.getColorSamplePerDimension
+          colorSampleIndex(i) = v % cfg.getColorSamplePerDimension
+        }
+      }
+    }
+    for (shape <- 0 until shapeSamples) {
+      if (!cfg.isFixShape) {
+        //! Do random
+        if (cfg.getShapeRandomCount > 0) randomShape()
+        //! Do sampling
+        else {
+          //! Update value
+          init = init.copy(momo = init.momo.copy(shape = {
+            val current = init.momo.shape
+            current.zipWithIndex.map { case (k, v) =>
+              if (v < shapeSampleIndex.size)
+                shapeSampleList(shapeSampleIndex(v)).asInstanceOf[Double] * maximalSigma
+              else
+                k
+            }
+          }))
+          //! Increase index
+          var i = 0
+          var carry = 0
+          shapeSampleIndex(maxShapeDim - 1) = shapeSampleIndex(maxShapeDim - 1) + 1
+          for (i <- maxShapeDim - 1 to 0 by -1) {
+            val v = shapeSampleIndex(i) + carry
+            carry = v / cfg.getShapeSamplePerDimension
+            shapeSampleIndex(i) = v % cfg.getShapeSamplePerDimension
+          }
+        }
+      }
+      for (express <- 0 until expSamples) {
+        if (!cfg.isFixExpression) {
+          //! Do random
+          if (cfg.getExpressionRandomCount > 0) randomExpression()
+          //! Do sampling
+          else {
+            //! Update value
+            init = init.copy(momo = init.momo.copy(expression = {
+              val current = init.momo.expression
+              current.zipWithIndex.map { case (k, v) =>
+                if (v < expSampleIndex.size)
+                  expSampleList(expSampleIndex(v)).asInstanceOf[Double] * maximalSigma
+                else
+                  k
+              }
+            }))
+            //! Increase index
+            var i = 0
+            var carry = 0
+            expSampleIndex(maxShapeDim - 1) = expSampleIndex(maxExpressionDim - 1) + 1
+            for (i <- maxExpressionDim - 1 to 0 by -1) {
+              val v = expSampleIndex(i) + carry
+              carry = v / cfg.getExpressionSamplePerDimension
+              expSampleIndex(i) = v % cfg.getExpressionSamplePerDimension
+            }
+          }
+        }
+        //! Update image
+        updateImage() //?
+        //! Write statistics csv
+        ;
+        //! Write to file
+        ;
+      }
+    }
+  }
 }
