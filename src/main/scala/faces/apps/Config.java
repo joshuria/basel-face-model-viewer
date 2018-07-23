@@ -17,6 +17,7 @@ import java.nio.file.Paths;
     private final int _seed;
     private final int _width, _height;
     private final String _modelPath;
+    private final boolean _updateImage;
 
     private final boolean _fixColor;
     private final boolean _fixShape;
@@ -40,8 +41,10 @@ import java.nio.file.Paths;
     public int getWidth() { return _width; }
     /**Window height (also color image height).*/
     public int getHeight() { return _height; }
-    /**shape model (*.h5) model's path.*/
+    /**Shape model (*.h5) model's path.*/
     public String getModelPath() { return _modelPath; }
+    /**Update image after adjust parameters or not.*/
+    public boolean needUpdateImage() { return _updateImage; }
     /**Is face color (texture) fixed.*/
     public boolean isFixColor() { return _fixColor; }
     /**Is face shape (vertex position) fixed.*/
@@ -86,6 +89,7 @@ import java.nio.file.Paths;
         @JsonProperty("seed") int seed,
         @JsonProperty("width") int width, @JsonProperty("height") int height,
         @JsonProperty("modelPath") String modelPath,
+        @JsonProperty("updateImage") boolean updateImage,
         @JsonProperty("colorFix") boolean colorFix,
         @JsonProperty("colorRandomCount") int colorRandomCount,
         @JsonProperty("colorMaxDimension") int colorMaxDimension,
@@ -103,6 +107,7 @@ import java.nio.file.Paths;
         _width = width > 0 ? width : DefaultWidth;
         _height = height > 0 ? height : DefaultHeight;
         _modelPath = modelPath;
+        _updateImage = updateImage;
         _fixColor = colorFix;   _fixShape = shapeFix;   _fixExpression = expressionFix;
         if (colorFix) {
             _colorRandomCount = 0;

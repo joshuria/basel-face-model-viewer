@@ -3,6 +3,7 @@
     "modelPath": "B:/Download/model2017-1_face12_nomouth.h5",
     "width": 512,
     "height": 512,
+    "updateImage": true,
 
     "colorFix": false,
     "colorRandomCount": 0,

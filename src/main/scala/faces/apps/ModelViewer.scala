@@ -678,7 +678,7 @@ case class SimpleModelViewer(
           }
         }
         //! Update image
-        updateImage() //?
+        if (cfg.needUpdateImage())  updateImage()
         //! Write statistics csv
         ;
         //! Write to file
