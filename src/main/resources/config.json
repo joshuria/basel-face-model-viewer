@@ -1,0 +1,21 @@
+{
+    "seed": 3,
+    "modelPath": "./model.h5",
+    "width": 128,
+    "height": 128,
+
+    "colorFix": true,
+    "colorRandomCount": 0,
+    "colorMaxDimension": 0,
+    "colorSamplePerDimension": 0,
+
+    "shapeFix": true,
+    "shapeRandomCount": 0,
+    "shapeMaxDimension": 0,
+    "shapeSamplePerDimension": 0,
+
+    "expressionFix": true,
+    "expressionRandomCount": 0,
+    "expressionMaxDimension": 0,
+    "expressionSamplePerDimension": 0
+}

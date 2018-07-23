@@ -36,11 +36,23 @@
  import scala.util.{Failure, Try}
 
 object ModelViewer extends App {
-
   final val DEFAULT_DIR = new File(".")
+  final val DefaultConfigPath = "./config.json";
+
+  //! Load config file
+  private val cfg: Config =
+  try { Config.loadFromFile(DefaultConfigPath) }
+  catch {
+    case e: IOException =>
+      e.printStackTrace()
+      null
+  }
+  if (cfg == null)
+    println("Fail to load config file: " + DefaultConfigPath)
+    None
 
   val modelFile: Option[File] = getModelFile(args)
-  modelFile.map(SimpleModelViewer(_))
+  modelFile.map(SimpleModelViewer(_, cfg))
 
   private def getModelFile(args: Seq[String]): Option[File] = {
     if (args.nonEmpty) {
@@ -48,7 +60,12 @@ object ModelViewer extends App {
       if (path.isFile) return Some(path.jfile)
       if (path.isDirectory) return askUserForModelFile(path.jfile)
     }
-    askUserForModelFile(DEFAULT_DIR)
+
+    println("Loading model file...")
+    if (cfg.getModelPath.trim().isEmpty)
+      askUserForModelFile(DEFAULT_DIR)
+    else
+      Some(new File(cfg.getModelPath))
   }
 
   private def askUserForModelFile(dir: File): Option[File] = {
@@ -64,8 +81,9 @@ object ModelViewer extends App {
 
 case class SimpleModelViewer(
   modelFile: File,
-  imageWidth: Int = 512,
-  imageHeight: Int = 512,
+  cfg: Config,
+//  imageWidth: Int = 512,
+//  imageHeight: Int = 512,
   maximalSliderValue: Int = 2,
   maximalShapeRank: Option[Int] = None,
   maximalColorRank: Option[Int] = None,
@@ -73,7 +91,7 @@ case class SimpleModelViewer(
 ) {
 
   scalismo.initialize()
-  val seed = 1024L
+  val seed: Int = cfg.getRandomSeed
   implicit val rnd: Random = Random(seed)
 
 
@@ -97,7 +115,7 @@ case class SimpleModelViewer(
 
   var renderer: MoMoRenderer = MoMoRenderer(model, RGBA.BlackTransparent).cached(5)
 
-  val initDefault: RenderParameter = RenderParameter.defaultSquare.fitToImageSize(imageWidth, imageHeight)
+  val initDefault: RenderParameter = RenderParameter.defaultSquare.fitToImageSize(cfg.getWidth, cfg.getHeight)
   val init10: RenderParameter = initDefault.copy(
     momo = initDefault.momo.withNumberOfCoefficients(shapeRank, colorRank, expRank)
   )
@@ -131,7 +149,7 @@ case class SimpleModelViewer(
     (value / maximalSigma * sliderSteps).toInt
   }
 
-  val bg = PixelImage(imageWidth, imageHeight, (_, _) => RGBA.Black)
+  val bg = PixelImage(cfg.getWidth, cfg.getHeight, (_, _) => RGBA.Black)
 
   val imageWindow = ImagePanel(renderWithBG(init))
 
@@ -540,8 +558,8 @@ case class SimpleModelViewer(
       if (lookAt) {
         val x = e.getX
         val y = e.getY
-        val yawPose = math.Pi / 2 * (x - imageWidth * 0.5) / (imageWidth / 2)
-        val pitchPose = math.Pi / 2 * (y - imageHeight * 0.5) / (imageHeight / 2)
+        val yawPose = math.Pi / 2 * (x - cfg.getWidth * 0.5) / (cfg.getWidth / 2)
+        val pitchPose = math.Pi / 2 * (y - cfg.getHeight * 0.5) / (cfg.getHeight / 2)
 
         init = init.copy(pose = init.pose.copy(yaw = yawPose, pitch = pitchPose))
         updateImage()
