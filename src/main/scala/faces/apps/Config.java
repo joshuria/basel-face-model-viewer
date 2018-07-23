@@ -104,15 +104,54 @@ import java.nio.file.Paths;
         _height = height > 0 ? height : DefaultHeight;
         _modelPath = modelPath;
         _fixColor = colorFix;   _fixShape = shapeFix;   _fixExpression = expressionFix;
-        _colorRandomCount = colorRandomCount >= 0 ? colorRandomCount : 0;
-        _colorMaxDimension = colorMaxDimension >= 0 ? colorMaxDimension : 0;
-        _colorSamplePerDimension = colorSamplePerDimension >= 0 ? colorSamplePerDimension : 0;
-        _shapeRandomCount = shapeRandomCount >= 0 ? shapeRandomCount : 0;
-        _shapeMaxDimension = shapeMaxDimension >= 0 ? shapeMaxDimension : 0;
-        _shapeSamplePerDimension = shapeSamplePerDimension >= 0 ? shapeSamplePerDimension : 0;
-        _expressionRandomCount = expressionRandomCount >= 0 ? expressionRandomCount : 0;
-        _expressionMaxDimension = expressionMaxDimension >= 0 ? expressionMaxDimension : 0;
-        _expressionSamplePerDimension = expressionSamplePerDimension >= 0 ? expressionSamplePerDimension : 0;
+        if (colorFix) {
+            _colorRandomCount = 0;
+            _colorMaxDimension = Integer.MAX_VALUE;
+            _colorSamplePerDimension = 1;
+        }
+        else {
+            _colorRandomCount = colorRandomCount >= 0 ? colorRandomCount : 0;
+            if (_colorRandomCount > 0) {
+                _colorMaxDimension = 0;
+                _colorSamplePerDimension = 0;
+            }
+            else {
+                _colorMaxDimension = colorMaxDimension >= 0 ? colorMaxDimension : 0;
+                _colorSamplePerDimension = colorSamplePerDimension >= 0 ? colorSamplePerDimension : 0;
+            }
+        }
+        if (shapeFix) {
+            _shapeRandomCount = 0;
+            _shapeMaxDimension = Integer.MAX_VALUE;
+            _shapeSamplePerDimension = 1;
+        }
+        else {
+            _shapeRandomCount = shapeRandomCount >= 0 ? shapeRandomCount : 0;
+            if (_shapeRandomCount > 0) {
+                _shapeMaxDimension = 0;
+                _shapeSamplePerDimension = 0;
+            }
+            else {
+                _shapeMaxDimension = shapeMaxDimension >= 0 ? shapeMaxDimension : 0;
+                _shapeSamplePerDimension = shapeSamplePerDimension >= 0 ? shapeSamplePerDimension : 0;
+            }
+        }
+        if (expressionFix) {
+            _expressionRandomCount = 0;
+            _expressionMaxDimension = Integer.MAX_VALUE;
+            _expressionSamplePerDimension = 1;
+        }
+        else {
+            _expressionRandomCount = expressionRandomCount >= 0 ? expressionRandomCount : 0;
+            if (_expressionRandomCount > 0) {
+                _expressionMaxDimension = 0;
+                _expressionSamplePerDimension = 0;
+            }
+            else {
+                _expressionMaxDimension = expressionMaxDimension >= 0 ? expressionMaxDimension : 0;
+                _expressionSamplePerDimension = expressionSamplePerDimension >= 0 ? expressionSamplePerDimension : 0;
+            }
+        }
     }
 
     /**Load config from give path.
