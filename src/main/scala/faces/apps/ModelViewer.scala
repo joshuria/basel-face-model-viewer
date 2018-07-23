@@ -341,13 +341,13 @@ case class SimpleModelViewer(
       else renderer = MoMoRenderer(model, RGBA.BlackTransparent).cached(5)
 
       showExpressionModel = !showExpressionModel
-      updateToggleExpressioButton()
+      updateToggleExpressionButton()
       addRemoveExpressionTab()
       updateImage()
     }
   })
 
-  def updateToggleExpressioButton(): Unit = {
+  def updateToggleExpressionButton(): Unit = {
     if ( showExpressionModel ) toggleExpressionButton.setText("expressions off")
     else toggleExpressionButton.setText("expressions on")
   }
