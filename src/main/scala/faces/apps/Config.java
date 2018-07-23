@@ -70,10 +70,16 @@ import java.nio.file.Paths;
      ignore fixed range sampling ({@link #getColorMaxDimension()} and {@link #getColorSamplePerDimension()}).</p>*/
     public int getColorRandomCount() { return _colorRandomCount; }
     /**Get max # of dimension to be used on color features by fix sampling.
-     <p>Total number of output is {@code {@link #getColorMaxDimension()} x {@link #getColorSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getColorMaxDimension()} x {@link #getColorSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getColorMaxDimension() { return _colorMaxDimension; }
     /**Get # of samples to be used per color dimension.
-     <p>Total number of output is {@code {@link #getColorMaxDimension()} x {@link #getColorSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getColorMaxDimension()} x {@link #getColorSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getColorSamplePerDimension() { return _colorSamplePerDimension; }
 
     /**Get # of random samples to be used in shape features.
@@ -81,10 +87,16 @@ import java.nio.file.Paths;
      ignore fixed range sampling ({@link #getShapeMaxDimension()} and {@link #getShapeSamplePerDimension()}).</p>*/
     public int getShapeRandomCount() { return _shapeRandomCount; }
     /**Get max # of dimension to be used on shape features by fix sampling.
-     <p>Total number of output is {@code {@link #getShapeMaxDimension()} x {@link #getShapeSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getShapeMaxDimension()} x {@link #getShapeSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getShapeMaxDimension() { return _shapeMaxDimension; }
     /**Get # of samples to be used per shape dimension.
-     <p>Total number of output is {@code {@link #getShapeMaxDimension()} x {@link #getShapeSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getShapeMaxDimension()} x {@link #getShapeSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getShapeSamplePerDimension() { return _shapeSamplePerDimension; }
 
     /**Get # of random samples to be used in expression features.
@@ -92,10 +104,16 @@ import java.nio.file.Paths;
      ignore fixed range sampling ({@link #getExpressionMaxDimension()} and {@link #getExpressionSamplePerDimension()}).</p>*/
     public int getExpressionRandomCount() { return _expressionRandomCount; }
     /**Get max # of dimension to be used on expression features by fix sampling.
-     <p>Total number of output is {@code {@link #getExpressionMaxDimension()} x {@link #getExpressionSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getExpressionMaxDimension()} x {@link #getExpressionSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getExpressionMaxDimension() { return _expressionMaxDimension; }
     /**Get # of samples to be used per expression dimension.
-     <p>Total number of output is {@code {@link #getExpressionMaxDimension()} x {@link #getExpressionSamplePerDimension()}}.</p>*/
+     <p>Total number of output is {@code {@link #getExpressionMaxDimension()} x {@link #getExpressionSamplePerDimension()}}.
+     This value defines fixed range sampling, and the sampling method computes parameters iteratively
+     from the first dimension to requested max dimension, and then generating new mesh by this
+     parameters </p>*/
     public int getExpressionSamplePerDimension() { return _expressionSamplePerDimension; }
 
     private Config(

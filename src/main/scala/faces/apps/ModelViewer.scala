@@ -633,8 +633,8 @@ case class SimpleModelViewer(
         //! Increase index
         var i = 0
         var carry = 0
-        colorSampleIndex(maxColorDim - 1) = colorSampleIndex(maxColorDim - 1) + 1
-        for (i <- maxColorDim - 1 to 0 by -1) {
+        colorSampleIndex(0) = colorSampleIndex.head + 1
+        for (i <- 0 until maxColorDim) {
           val v = colorSampleIndex(i) + carry
           carry = v / cfg.getColorSamplePerDimension
           colorSampleIndex(i) = v % cfg.getColorSamplePerDimension
@@ -660,8 +660,8 @@ case class SimpleModelViewer(
           //! Increase index
           var i = 0
           var carry = 0
-          shapeSampleIndex(maxShapeDim - 1) = shapeSampleIndex(maxShapeDim - 1) + 1
-          for (i <- maxShapeDim - 1 to 0 by -1) {
+          shapeSampleIndex(0) = shapeSampleIndex.head + 1
+          for (i <- 0 until maxShapeDim) {
             val v = shapeSampleIndex(i) + carry
             carry = v / cfg.getShapeSamplePerDimension
             shapeSampleIndex(i) = v % cfg.getShapeSamplePerDimension
@@ -687,8 +687,8 @@ case class SimpleModelViewer(
             //! Increase index
             var i = 0
             var carry = 0
-            expSampleIndex(maxShapeDim - 1) = expSampleIndex(maxExpressionDim - 1) + 1
-            for (i <- maxExpressionDim - 1 to 0 by -1) {
+            expSampleIndex(0) = expSampleIndex.head + 1
+            for (i <- 0 until maxExpressionDim) {
               val v = expSampleIndex(i) + carry
               carry = v / cfg.getExpressionSamplePerDimension
               expSampleIndex(i) = v % cfg.getExpressionSamplePerDimension
