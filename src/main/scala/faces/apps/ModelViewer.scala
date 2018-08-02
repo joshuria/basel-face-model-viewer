@@ -582,6 +582,7 @@ case class SimpleModelViewer(
   var csv = new CSVWriter()
   //! Write CSV header
   private val header = csv.newRow(colorRank + shapeRank + expRank)
+  header.add("file")
   var rnk = 0
   for (rnk <- 0 until colorRank)  header.add("c" + rnk)
   for (rnk <- 0 until shapeRank)  header.add("s" + rnk)
@@ -699,6 +700,7 @@ case class SimpleModelViewer(
         if (cfg.needUpdateImage())  updateImage()
         //! Write statistics csv
         val row = csv.newRow(colorRank + shapeRank + expRank)
+        row.add(s"$color-$shape-$express")
         for (rnk <- 0 until colorRank)  row.add(init.momo.color(rnk))
         for (rnk <- 0 until shapeRank)  row.add(init.momo.shape(rnk))
         for (rnk <- 0 until expRank)    row.add(init.momo.expression(rnk))
