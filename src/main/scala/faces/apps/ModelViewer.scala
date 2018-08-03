@@ -196,7 +196,7 @@ case class SimpleModelViewer(
       val current = init.momo.shape
       current.zipWithIndex.map {
         case (_, _) =>
-          rnd.scalaRandom.nextDouble()
+          rnd.scalaRandom.nextDouble() * 2 - 1
       }
 
     }))
@@ -254,7 +254,7 @@ case class SimpleModelViewer(
       val current = init.momo.color
       current.zipWithIndex.map {
         case (_, _) =>
-          rnd.scalaRandom.nextDouble
+          rnd.scalaRandom.nextDouble() * 2 - 1
       }
 
     }))
@@ -312,7 +312,7 @@ case class SimpleModelViewer(
       val current = init.momo.expression
       current.zipWithIndex.map {
         case (_, _) =>
-          rnd.scalaRandom.nextDouble
+          rnd.scalaRandom.nextDouble() * 2 - 1
       }
 
     }))
